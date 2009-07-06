@@ -7,16 +7,16 @@ This is a runner for the maven "build" "tool" that works with the Surefire test 
 1. Sorry, no gem yet; just check this out and put the `bin` dir in your path.
 1. Set up your `.vimrc` or some file it includes with:
 
-    let &makeprg="sfte mvn -d test -v very -f /path/to/your/pom.xml . " "
+        let &makeprg="sfte mvn -d test -v very -f /path/to/your/pom.xml . " "
 1. Modify your `maven2.vim` compiler plugin as so:
 
-    CompilerSet errorformat=
-        \%[%^[]%\\@=%f:%l:\ %m,
-        \%A%[%^[]%\\@=%f:[%l\\,%v]\ %m,
-        \%-Clocation\ %#:%.%#,
-        \%C%[%^:]%#%m,
-        \%-G%.%#,
-        \%-Z\ %#
+        CompilerSet errorformat=
+            \%[%^[]%\\@=%f:%l:\ %m,
+            \%A%[%^[]%\\@=%f:[%l\\,%v]\ %m,
+            \%-Clocation\ %#:%.%#,
+            \%C%[%^:]%#%m,
+            \%-G%.%#,
+            \%-Z\ %#
 
 The first line of that is what I added to get the errors to show up, so if you need a more complicated `errorformat`, that's what you need to add.
 
