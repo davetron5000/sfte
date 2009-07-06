@@ -1,0 +1,76 @@
+#!/usr/bin/ruby
+$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'rubygems'
+require 'gli'
+
+include GLI
+
+require 'sfte'
+
+desc 'Classname prefix that indicates YOUR code'
+default_value 'pos'
+arg_name 'a class package-style prefix'
+flag [:p,:prefix]
+
+desc 'Extracts useful info from surefire test output'
+arg_name 'The name of the test that failed, from maven output (not filename)'
+command :cat do |c|
+  c.desc 'Show the entire file instead of relevant parts'
+  c.switch [:a,:all]
+
+  c.desc 'Override the base dir, when looking for the file'
+  c.default_value '.'
+  c.flag [:b,:basedir]
+
+  c.action do |global_options,options,args|
+    cat(global_options,options,args)
+  end
+end
+
+desc 'Run mvn'
+arg_name 'Maven command line'
+command :mvn do |c|
+  c.desc 'Show maven output'
+  c.arg_name '"very" or something else'
+  c.flag [:v,:verbose]
+
+  c.desc 'Specify the pom file'
+  c.arg_name 'full path to pom file'
+  c.flag [:f]
+
+  c.desc 'Default target'
+  c.arg_name 'maven target'
+  c.default_value 'test-compile'
+  c.flag [:d]
+
+  c.action do |global_options,options,args|
+    maven(global_options,options,args)
+  end
+end
+
+desc 'Outputs the given surfire text files as vim-efm lines for stepthrough'
+arg_name 'List of surefire output files to parse'
+command :efm do |c|
+
+  c.action do |global_options,options,args|
+    efm(global_options,options,args)
+  end
+end
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abourt and not call the
+  # chosen command
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+GLI.run(ARGV)
